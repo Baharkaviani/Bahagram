@@ -6,7 +6,7 @@ Created on Sun Nov 29 00:41:00 2020 (1399/9/9)
 import socket
 import threading
 
-PORT = 9797
+PORT = 7009
 
 MESSAGE_LENGTH_SIZE = 64
 
@@ -42,7 +42,10 @@ def start(server):
 
     while True:
         conn, addr = server.accept()
+
         t = threading.Thread(target = handle_client, args = (conn, addr))
+        
+        t.start()
 
 """
 Defined on Sun Nov 29 01:14:00 2020 (1399/9/9)
@@ -56,7 +59,7 @@ def handle_client(conn, addr):
     # recieve the message from Client
     while connected:
         message_length = int(conn.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
-        msg = conn.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING)
+        msg = conn.recv(message_length).decode(ENCODING)
 
         print("[MESSAGE RECIEVED] {}".format(msg))
 

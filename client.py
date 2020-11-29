@@ -6,7 +6,7 @@ Created on Sun Nov 29 02:12:00 2020 (1399/9/9)
 
 import socket
 
-PORT = 9797
+PORT = 7009
 
 MESSAGE_LENGTH_SIZE = 64
 
@@ -31,7 +31,7 @@ def send_msg(client, msg):
 
     msg_length = len(message)
     msg_length = str(msg_length).encode(ENCODING)
-    msg_length += b' ' * (MESSAGE_LENGTH_SIZE - len(message_length))
+    msg_length += b' ' * (MESSAGE_LENGTH_SIZE - len(msg_length))
 
     client.send(msg_length)
     client.send(message)
