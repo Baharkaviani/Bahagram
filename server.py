@@ -15,7 +15,7 @@ ENCODING = 'utf-8'
 """
 Defined on Sun Nov 29 00:44:00 2020 (1399/9/9)
 @author: Bahar Kaviani
-
+description: bind socket to the HOST_INFORMATION and start it to listen
 """
 def main():
     address = socket.gethostbyname(socket.gethostname())
@@ -35,7 +35,7 @@ def main():
 """
 Defined on Sun Nov 29 00:53:00 2020 (1399/9/9)
 @author: Bahar Kaviani
-
+description: server creates and starts new thread for each accepted client
 """
 def start(server):
     server.listen()
@@ -44,13 +44,14 @@ def start(server):
         conn, addr = server.accept()
 
         t = threading.Thread(target = handle_client, args = (conn, addr))
-        
+
         t.start()
 
 """
 Defined on Sun Nov 29 01:14:00 2020 (1399/9/9)
 @author: Bahar Kaviani
-
+description: set 'connected' flag to 'True' till the client sends "DISCONNECT"
+             while the flag is set reads client messages from conn
 """
 def handle_client(conn, addr):
     print("[NEW CONNECTION] Client connected from {}".format(addr))
