@@ -1,0 +1,8 @@
+# Created by Bahar Kaviani
+
+### Python ###
+# Libraries
+*.lib
+
+# Video
+*.m4v
