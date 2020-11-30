@@ -7,9 +7,7 @@ Created on Sun Nov 29 02:12:00 2020 (1399/9/9)
 import socket
 
 PORT = 7009
-
 MESSAGE_LENGTH_SIZE = 64
-
 ENCODING = 'utf-8'
 
 """
@@ -48,7 +46,7 @@ def send_msg(client, msg):
 
     client.send(msg_length)
     client.send(message)
-    
+
 
 if __name__ == '__main__':
     main()
