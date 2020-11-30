@@ -6,6 +6,7 @@ Created on Sun Nov 29 02:12:00 2020 (1399/9/9)
 
 import socket
 
+# global variables
 PORT = 7009
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'

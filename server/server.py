@@ -7,6 +7,7 @@ import socket
 import threading
 import userManaging as user_managing
 
+# global variables
 PORT = 7009
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
