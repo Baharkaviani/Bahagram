@@ -7,13 +7,11 @@ description: Manage users when they request to connect the server.
 """
 import socket
 import threading
-import user as user
+import userInformation as user_information
 
 ### global variables
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
-# list of all connected IPs with their usernames
-allUsers = set()
 
 """
 Defined on Sun Nov 29 01:14:00 2020 (1399/9/9)
@@ -24,6 +22,9 @@ end: no
 """
 def handle_client(conn, addr):
     print("[NEW CONNECTION] Client connected from {}".format(addr))
+
+    # extra print for checking
+    print(user_information.allUsers)
 
     connected = True
 

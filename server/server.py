@@ -6,13 +6,12 @@ Created on Sun Nov 29 00:41:00 2020 (1399/9/9)
 import socket
 import threading
 import userManaging as user_managing
+import userInformation as user_information
 
 ### global variables
 PORT = 7009
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
-# list of all connected IPs with their usernames
-allUsers = set(())
 
 """
 Defined on Sun Nov 29 00:44:00 2020 (1399/9/9)
@@ -32,12 +31,7 @@ def main():
     s.bind(HOST_INFORMATION)
 
     # Reading from file and then close the file
-    with open("users.txt", "r") as usersFile:
-        # add all users from users.txt to allUsers set
-        for line in usersFile:
-            # extra print for checking
-            print(line)
-            allUsers.add(line)
+    user_information.initializeAllUsers()
 
     print("[SERVER STARTS] Server is starting ...")
 
