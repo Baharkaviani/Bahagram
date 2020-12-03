@@ -7,15 +7,18 @@ import socket
 import threading
 import userManaging as user_managing
 
-# global variables
+### global variables
 PORT = 7009
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
+# list of all connected IPs with their usernames
+allUsers = set(())
 
 """
 Defined on Sun Nov 29 00:44:00 2020 (1399/9/9)
 @author: Bahar Kaviani
-description: bind socket to the HOST_INFORMATION and start it to listen
+description: Bind socket to the HOST_INFORMATION and start it to listen
+state: 0
 """
 def main():
     address = socket.gethostbyname(socket.gethostname())
@@ -28,6 +31,14 @@ def main():
 
     s.bind(HOST_INFORMATION)
 
+    # Reading from file and then close the file
+    with open("users.txt", "r") as usersFile:
+        # add all users from users.txt to allUsers set
+        for line in usersFile:
+            # extra print for checking
+            print(line)
+            allUsers.add(line)
+
     print("[SERVER STARTS] Server is starting ...")
 
     start(s)
@@ -35,7 +46,8 @@ def main():
 """
 Defined on Sun Nov 29 00:53:00 2020 (1399/9/9)
 @author: Bahar Kaviani
-description: server creates and starts new thread for each accepted client
+description: Server creates and starts new thread for each accepted client
+state: 0
 """
 def start(server):
     server.listen()

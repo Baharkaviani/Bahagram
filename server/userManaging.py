@@ -1,42 +1,31 @@
 """
 Created on Mon Nov 30 17:43:00 2020 (1399/9/10)
 @author: Bahar Kaviani
+description: Manage users when they request to connect the server.
+    Check if the user is new or not by it's IP address.
+    If it was get username.
 """
 import socket
 import threading
 import user as user
 
-# global variables
+### global variables
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
-onlineUsers = set()
-
-"""
-Defined on Mon Nov 30 18:26:00 2020 (1399/9/10)
-@author: Bahar Kaviani
-description:
-end: no
-"""
-def register(username):
-
+# list of all connected IPs with their usernames
+allUsers = set()
 
 """
 Defined on Sun Nov 29 01:14:00 2020 (1399/9/9)
 @author: Bahar Kaviani
-description: set 'connected' flag to 'True' till the client sends "DISCONNECT"
-             while the flag is set reads client messages from conn
+description: Set 'connected' flag to 'True' till the client sends "DISCONNECT"
+    while the flag is set reads client messages from conn
 end: no
 """
 def handle_client(conn, addr):
     print("[NEW CONNECTION] Client connected from {}".format(addr))
+
     connected = True
-
-    # print all online users for the new connected user
-    for o in onlineUsers:
-        print(o)
-
-    # add connected user to the onlineUsers set
-    onlineUsers.add()
 
     # recieve the message from Client
     while connected:
@@ -50,3 +39,12 @@ def handle_client(conn, addr):
 
     # if connected == false "while" ends and connection will be closed
     conn.close()
+
+"""
+Defined on Mon Nov 30 18:26:00 2020 (1399/9/10)
+@author: Bahar Kaviani
+description:
+end: no
+"""
+def register(username):
+    pass
