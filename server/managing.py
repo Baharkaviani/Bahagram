@@ -15,7 +15,6 @@ ENCODING = 'utf-8'
 
 """
 Defined on Sun Nov 29 01:14:00 2020 (1399/9/9)
-@author: Bahar Kaviani
 description: Set 'connected' flag to 'True' till the client sends "DISCONNECT"
     while the flag is set reads client messages from conn
 end: no
@@ -24,7 +23,9 @@ def handle_client(conn, addr):
     print("[NEW CONNECTION] Client connected from {}".format(addr))
 
     # extra print for checking
-    print(user_information.allUsers)
+    print("[userInformation]: ")
+    for obj in user_information.allUsers:
+       print( obj.IP, obj.username, sep =' ' )
 
     connected = True
 
@@ -42,8 +43,16 @@ def handle_client(conn, addr):
     conn.close()
 
 """
+Defined on Thu Dec 3 20:33:00 2020 (1399/9/13)
+description: Check if the IP address is new or not
+end: no
+"""
+def check(address):
+    IP = address[0]
+    pass
+
+"""
 Defined on Mon Nov 30 18:26:00 2020 (1399/9/10)
-@author: Bahar Kaviani
 description:
 end: no
 """

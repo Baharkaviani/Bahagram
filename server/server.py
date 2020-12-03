@@ -5,7 +5,7 @@ Created on Sun Nov 29 00:41:00 2020 (1399/9/9)
 """
 import socket
 import threading
-import userManaging as user_managing
+import managing as managing
 import userInformation as user_information
 
 ### global variables
@@ -15,9 +15,7 @@ ENCODING = 'utf-8'
 
 """
 Defined on Sun Nov 29 00:44:00 2020 (1399/9/9)
-@author: Bahar Kaviani
 description: Bind socket to the HOST_INFORMATION and start it to listen
-state: 0
 """
 def main():
     address = socket.gethostbyname(socket.gethostname())
@@ -30,18 +28,17 @@ def main():
 
     s.bind(HOST_INFORMATION)
 
-    # Reading from file and then close the file
+    # Read from file and then close the file
     user_information.initializeAllUsers()
 
+    # start the server
     print("[SERVER STARTS] Server is starting ...")
 
     start(s)
 
 """
 Defined on Sun Nov 29 00:53:00 2020 (1399/9/9)
-@author: Bahar Kaviani
 description: Server creates and starts new thread for each accepted client
-state: 0
 """
 def start(server):
     server.listen()
@@ -49,7 +46,7 @@ def start(server):
     while True:
         conn, addr = server.accept()
 
-        t = threading.Thread(target = user_managing.handle_client, args = (conn, addr))
+        t = threading.Thread(target = managing.handle_client, args = (conn, addr))
 
         t.start()
 

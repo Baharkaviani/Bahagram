@@ -6,14 +6,13 @@ Created on Sun Nov 29 02:12:00 2020 (1399/9/9)
 
 import socket
 
-# global variables
+### global variables
 PORT = 7009
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
 
 """
 Defined on Sun Nov 29 02:17:00 2020 (1399/9/9)
-@author: Bahar Kaviani
 description: connect socket to the SERVER_INFORMATION and send a message
 """
 def main():
@@ -34,7 +33,6 @@ def main():
 
 """
 Defined on Sun Nov 29 02:34:00 2020 (1399/9/9)
-@author: Bahar Kaviani
 description: for each message first send message length then send the message
 """
 def send_msg(client, msg):
