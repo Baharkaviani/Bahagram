@@ -27,16 +27,18 @@ def handle_client(conn, addr):
     # for obj in user_information.allUsers:
     #    print( obj.IP, obj.username, sep =' ' )
 
-    # extra print for checking
-    print("[check if client is new]: {}".format(checkIP(addr)))
+    # # extra print for checking
+    # print("[check if client is new]: {}".format(checkIP(addr)))
 
+    # check if the connected client is a new user or not
     isNew = checkIP(addr)
 
     if isNew:
-        register()
+        register(addr)
     else:
         pass
 
+    # set the connected flag to True until client sends "DISCONNECT"
     connected = True
 
     # recieve the message from Client
@@ -59,25 +61,33 @@ description: Check if the IP address is new or not
 def checkIP(address):
     IP = address[0]
 
+    isNew = True
+
     # check all connected users' IP addresses
     for user in user_information.allUsers:
+        # # extra print for checking
+        # print("[IP address]: {}".format(IP))
+        # print("[user.IP:] {}".format(user.IP))
         if IP == user.IP:
-            return True
+            isNew = False
 
-    return False
+    return isNew
 
 """
 Defined on Fri Dec 3 03:56:00 2020 (1399/9/14)
 description: Check if the username is new or not
 """
 def checkUsername(username):
+    isNew = True
+
     # check all connected users' usernames
     for user in user_information.allUsers:
-        if username == user.IP:
-            return True
+        if username == user.username:
+            # extra print for checking
+            print("[check username]: {}".format(True))
+            isNew = False
 
-    return False
-
+    return isNew
 
 """
 Defined on Mon Nov 30 18:26:00 2020 (1399/9/10)
@@ -87,7 +97,12 @@ end: no
 """
 def register(address):
 
-    checkUsername()
+    # TODO: add a function to ask client it's username
+    #       now we just consider that the first sent data is user's username
+    #       the username will be checked by checkUsername function if it is new or not
+
+    username = "Bahar Kaviani"
+    checkUsername(username)
 
     with open("users.txt", "w") as usersFile:
         usersFile.write(address + ":" + username)
