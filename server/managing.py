@@ -4,6 +4,10 @@ Created on Mon Nov 30 17:43:00 2020 (1399/9/10)
 description: Manage users when they request to connect the server.
     Check if the user is new or not by it's IP address.
     If it was get username.
+'''
+commands:
+    getList
+    DISCONNECT
 """
 import socket
 import threading
@@ -39,32 +43,49 @@ def handle_client(conn, addr):
     # check if the connected client is a new user or not
     isNew = checkIP()
 
+    # send the first message to client
+    sendHelloToClient(isNew)
+
     if isNew:
         register()
     else:
-        sendHelloToClient()
         getCommand()
 
 """
 Defined on Fri Dec 4 20:58:00 2020 (1399/9/14)
 description: Send Hello to client
 """
-def sendHelloToClient():
-    IP = ADDR[0]
-    for user in user_information.allUsers:
-        if IP == user.IP:
-            username = user.username
+def sendHelloToClient(isNew):
+    # if the user was connected in the past
+    if isNew:
+        msg = "Hello"
+        message = msg.encode(ENCODING)
 
-    msg = "Hello {}".format(username)
-    message = msg.encode(ENCODING)
+        msg_length = len(message)
+        msg_length = str(msg_length).encode(ENCODING)
+        # check if the msg_length is shorter then 64 byte
+        msg_length += b' ' * (MESSAGE_LENGTH_SIZE - len(msg_length))
 
-    msg_length = len(message)
-    msg_length = str(msg_length).encode(ENCODING)
-    # check if the msg_length is shorter then 64 byte
-    msg_length += b' ' * (MESSAGE_LENGTH_SIZE - len(msg_length))
+        CONN.send(msg_length)
+        CONN.send(message)
 
-    CONN.send(msg_length)
-    CONN.send(message)
+    # if the user was connected in the past
+    else:
+        IP = ADDR[0]
+        for user in user_information.allUsers:
+            if IP == user.IP:
+                username = user.username
+
+        msg = "Hello {}".format(username)
+        message = msg.encode(ENCODING)
+
+        msg_length = len(message)
+        msg_length = str(msg_length).encode(ENCODING)
+        # check if the msg_length is shorter then 64 byte
+        msg_length += b' ' * (MESSAGE_LENGTH_SIZE - len(msg_length))
+
+        CONN.send(msg_length)
+        CONN.send(message)
 
 """
 Defined on Thu Dec 3 20:33:00 2020 (1399/9/13)

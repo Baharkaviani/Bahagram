@@ -26,12 +26,13 @@ def main():
 
     s.connect(SERVER_INFORMATION)
 
+
     message_length = int(s.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
     msg = s.recv(message_length).decode(ENCODING)
 
     print(msg)
 
-    # get first message from console and send it to server
+    # get message from console and send it to server
     while True:
         first_msg = input()
         send_msg(s, first_msg)
