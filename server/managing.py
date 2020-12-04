@@ -159,16 +159,17 @@ def getCommand():
         message_length = int(CONN.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
         msg = CONN.recv(message_length).decode(ENCODING)
 
-        print("[MESSAGE RECIEVED] {}".format(msg))
-
         # TODO: make a new function for managing these if clauses
         if msg == "getList":
-            # send the next command to get_list function
-            print("[getList COMMAND RECIEVED] {}".format(msg))
-            get_list.get_list(CONN, msg)
+            print("[getList COMMAND RECIEVED]")
+            get_list.get_list(CONN)
 
-        if msg == "DISCONNECT":
+        elif msg == "DISCONNECT":
+            print("[DISCONNECT RECIEVED]")
             connected = False
+
+        else:
+            print("[MESSAGE RECIEVED] {}".format(msg))
 
     # if connected == false "while" ends and connection will be closed
     CONN.close()

@@ -13,7 +13,6 @@ import user as User
 import userInformation as user_information
 
 ### global variables
-PORT = 7009
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
 # connection information
@@ -23,11 +22,17 @@ CONN = None
 Defined on Fri Dec 4 18:58:00 2020 (1399/9/14)
 description: Prepare different choices for the user who wants to see a list off users
 """
-def get_list(conn, command):
+def get_list(conn):
     global CONN
     CONN = conn
-    
-    if command == "AllUsernames":
+
+    # get the subCommand
+    subCommand_length = int(CONN.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
+    subCommand = CONN.recv(subCommand_length).decode(ENCODING)
+
+    print("[subCommand RECIEVED] {}".format(subCommand))
+
+    if subCommand == "AllUsernames":
         getAllUsernames()
     else:
         pass
@@ -41,7 +46,9 @@ def getAllUsernames():
 
     for u in user_information.allUsers:
         uName = u.username
-        send_msg(uName)
+        send_msg(str(uName))
+
+    send_msg("END")
 
 """
 Defined on Sun Nov 29 02:34:00 2020 (1399/9/9)
