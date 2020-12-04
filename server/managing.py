@@ -113,9 +113,5 @@ def register(conn, addr):
 
         usernameIsNew = checkUsername(username)
 
-    # weite to the "users.txt" file and then close the file
-    with open("users.txt", "a") as usersFile:
-        # TODO: ADD user to the user_information.allUsers
-        #       first write a function in userInformation file
-        usersFile.write(addr[0] + ":" + username)
-        usersFile.write("\n")
+    # write user information to the "users.txt" file and add to the user_information.allUsers
+    user_information.addUser(addr[0], username)
