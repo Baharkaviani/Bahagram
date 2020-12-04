@@ -28,7 +28,14 @@ def handle_client(conn, addr):
     #    print( obj.IP, obj.username, sep =' ' )
 
     # extra print for checking
-    print("[check if client is new]: {}".format(check(addr)))
+    print("[check if client is new]: {}".format(checkIP(addr)))
+
+    isNew = checkIP(addr)
+
+    if isNew:
+        register()
+    else:
+        pass
 
     connected = True
 
@@ -49,20 +56,38 @@ def handle_client(conn, addr):
 Defined on Thu Dec 3 20:33:00 2020 (1399/9/13)
 description: Check if the IP address is new or not
 """
-def check(address):
+def checkIP(address):
     IP = address[0]
 
-    # check all IP addresses
-    for userIP in user_information.allUsers:
-        if IP == userIP.IP:
+    # check all connected users' IP addresses
+    for user in user_information.allUsers:
+        if IP == user.IP:
             return True
 
     return False
 
 """
+Defined on Fri Dec 3 03:56:00 2020 (1399/9/14)
+description: Check if the username is new or not
+"""
+def checkUsername(username):
+    # check all connected users' usernames
+    for user in user_information.allUsers:
+        if username == user.IP:
+            return True
+
+    return False
+
+
+"""
 Defined on Mon Nov 30 18:26:00 2020 (1399/9/10)
-description:
+description: Ask username from new user.
+    Save the IP and the username to users.txt file
 end: no
 """
-def register(username):
-    pass
+def register(address):
+
+    checkUsername()
+
+    with open("users.txt", "w") as usersFile:
+        usersFile.write(address + ":" + username)
