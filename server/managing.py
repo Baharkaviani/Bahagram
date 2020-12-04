@@ -9,6 +9,7 @@ import socket
 import threading
 import userInformation as user_information
 import sendMessage as send_message
+import getList as get_list
 
 ### global variables
 MESSAGE_LENGTH_SIZE = 64
@@ -21,7 +22,6 @@ ADDR = None
 Defined on Sun Nov 29 01:14:00 2020 (1399/9/9)
 description: Set 'connected' flag to 'True' till the client sends "DISCONNECT"
     while the flag is set reads client messages from conn
-end: no
 """
 def handle_client(conn, addr):
     global CONN
@@ -29,7 +29,7 @@ def handle_client(conn, addr):
     CONN = conn
     ADDR = addr
 
-    print("[NEW CONNECTION] Client connected from {}".format(addr))
+    print("[NEW CONNECTION] Client connected from {}".format(ADDR))
 
     # extra print for checking
     print("[userInformation]: ")
@@ -42,7 +42,29 @@ def handle_client(conn, addr):
     if isNew:
         register()
     else:
+        sendHelloToClient()
         getCommand()
+
+"""
+Defined on Fri Dec 4 20:58:00 2020 (1399/9/14)
+description: Send Hello to client
+"""
+def sendHelloToClient():
+    IP = ADDR[0]
+    for user in user_information.allUsers:
+        if IP == user.IP:
+            username = user.username
+
+    msg = "Hello {}".format(username)
+    message = msg.encode(ENCODING)
+
+    msg_length = len(message)
+    msg_length = str(msg_length).encode(ENCODING)
+    # check if the msg_length is shorter then 64 byte
+    msg_length += b' ' * (MESSAGE_LENGTH_SIZE - len(msg_length))
+
+    CONN.send(msg_length)
+    CONN.send(message)
 
 """
 Defined on Thu Dec 3 20:33:00 2020 (1399/9/13)
@@ -105,7 +127,7 @@ def register():
 
 """
 Defined on Fri Dec 4 15:05:00 2020 (1399/9/14)
-description:
+description: Gets the user command then find the proper function for that
 """
 def getCommand():
     # set the connected flag to True until client sends "DISCONNECT"
@@ -118,8 +140,11 @@ def getCommand():
 
         print("[MESSAGE RECIEVED] {}".format(msg))
 
-        if msg == "sendMessage":
-            send_message.toPerson()
+        # TODO: make a new function for managing these if clauses
+        if msg == "getList":
+            # send the next command to get_list function
+            print("[getList COMMAND RECIEVED] {}".format(msg))
+            get_list.get_list(CONN, msg)
 
         if msg == "DISCONNECT":
             connected = False

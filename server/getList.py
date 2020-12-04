@@ -11,22 +11,31 @@ import socket
 import threading
 import user as User
 import userInformation as user_information
-from managing import CONN
-from server import SOCKET as SERVER
 
 ### global variables
 PORT = 7009
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
+# connection information
+CONN = None
 
 """
 Defined on Fri Dec 4 18:58:00 2020 (1399/9/14)
 description: Prepare different choices for the user who wants to see a list off users
 """
-def get_list(command):
-    if msg == "AllUsernames":
+def get_list(conn, command):
+    global CONN
+    CONN = conn
+    
+    if command == "AllUsernames":
         getAllUsernames()
+    else:
+        pass
 
+"""
+Defined on Fri Dec 4 19:23:00 2020 (1399/9/14)
+description: Send all user names to client
+"""
 def getAllUsernames():
     send_msg("[LIST OFF ALL USERS]")
 
@@ -46,5 +55,5 @@ def send_msg(msg):
     # check if the msg_length is shorter then 64 byte
     msg_length += b' ' * (MESSAGE_LENGTH_SIZE - len(msg_length))
 
-    SERVER.send(msg_length)
-    SERVER.send(message)
+    CONN.send(msg_length)
+    CONN.send(message)

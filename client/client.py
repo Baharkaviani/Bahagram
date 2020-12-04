@@ -26,6 +26,11 @@ def main():
 
     s.connect(SERVER_INFORMATION)
 
+    message_length = int(s.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
+    msg = s.recv(message_length).decode(ENCODING)
+
+    print(msg)
+
     # get first message from console and send it to server
     while True:
         first_msg = input()
@@ -46,6 +51,23 @@ def send_msg(client, msg):
     client.send(msg_length)
     client.send(message)
 
+"""
+Defined on Fro Dec 4 19:10:00 2020 (1399/9/14)
+description:
+"""
+def check_msg(command):
+    if command == "getList":
+        receiving = True
+
+        # recieve the message from Client
+        while receiving:
+            message_length = int(CONN.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
+            msg = CONN.recv(message_length).decode(ENCODING)
+
+            print(msg)
+
+            if msg == "END":
+                receiving = False
 
 if __name__ == '__main__':
     main()
