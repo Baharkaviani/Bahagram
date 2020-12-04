@@ -21,19 +21,19 @@ def initializeAllUsers():
         for line in usersFile:
             # # extra print for checking
             # print("[users.txtfile]: " + line)
-            IP, username = line.split(":")
-            x = user.User(IP, username)
+            IP, port, username = line.split(":")
+            x = user.User(IP, port, username)
             allUsers.append(x)
 
 """
 Defined on Fri Dec 4 11:56:00 2020 (1399/9/14)
 description: add new user to allUsers set
 """
-def addUser(IP, username):
-    x = user.User(IP, username)
+def addUser(IP, port, username):
+    x = user.User(IP, port, username)
 
     with open("users.txt", "a") as usersFile:
-        usersFile.write(x.IP + ":" + x.username)
+        usersFile.write(x.IP + ":" + str(x.port) + ":"+ x.username)
         usersFile.write("\n")
 
     allUsers.append(x)

@@ -26,7 +26,7 @@ def handle_client(conn, addr):
     # extra print for checking
     print("[userInformation]: ")
     for obj in user_information.allUsers:
-       print( obj.IP, obj.username)
+       print( obj.IP, obj.port, obj.username)
 
     # # extra print for checking
     # print("[check if client is new]: {}".format(checkIP(addr)))
@@ -114,4 +114,4 @@ def register(conn, addr):
         usernameIsNew = checkUsername(username)
 
     # write user information to the "users.txt" file and add to the user_information.allUsers
-    user_information.addUser(addr[0], username)
+    user_information.addUser(addr[0], addr[1], username)

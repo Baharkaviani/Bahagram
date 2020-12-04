@@ -5,6 +5,7 @@ description: Define User class and it's functions.
 """
 
 class User:
-    def __init__(self, IP, username):
+    def __init__(self, IP, port, username):
         self.IP = IP
+        self.port = port
         self.username = username
