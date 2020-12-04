@@ -8,10 +8,14 @@ description: Manage users when they request to connect the server.
 import socket
 import threading
 import userInformation as user_information
+import sendMessage as send_message
 
 ### global variables
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
+# connection information
+CONN = None
+ADDR = None
 
 """
 Defined on Sun Nov 29 01:14:00 2020 (1399/9/9)
@@ -20,6 +24,11 @@ description: Set 'connected' flag to 'True' till the client sends "DISCONNECT"
 end: no
 """
 def handle_client(conn, addr):
+    global CONN
+    global ADDR
+    CONN = conn
+    ADDR = addr
+
     print("[NEW CONNECTION] Client connected from {}".format(addr))
 
     # extra print for checking
@@ -28,10 +37,10 @@ def handle_client(conn, addr):
        print( obj.IP, obj.port, obj.username)
 
     # check if the connected client is a new user or not
-    isNew = checkIP(addr)
+    isNew = checkIP()
 
     if isNew:
-        register(conn, addr)
+        register()
     else:
         getCommand()
 
@@ -39,8 +48,8 @@ def handle_client(conn, addr):
 Defined on Thu Dec 3 20:33:00 2020 (1399/9/13)
 description: Check if the IP address is new or not
 """
-def checkIP(address):
-    IP = address[0]
+def checkIP():
+    IP = ADDR[0]
 
     isNew = True
 
@@ -71,7 +80,7 @@ description: Ask username from new user.
     Save the IP, port and the username to users.txt file
     After registering user can send commands to server.
 """
-def register(conn, addr):
+def register():
 
     # TODO: add a function to ask client it's username
     #       now we just consider that the first sent data is user's username
@@ -81,15 +90,15 @@ def register(conn, addr):
 
     # recieve the message from Client
     while usernameIsNew == False:
-        username_length = int(conn.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
-        username = conn.recv(username_length).decode(ENCODING)
+        username_length = int(CONN.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
+        username = CONN.recv(username_length).decode(ENCODING)
 
         print("[USERNAME RECIEVED] {}".format(username))
 
         usernameIsNew = checkUsername(username)
 
     # write user information to the "users.txt" file and add to the user_information.allUsers
-    user_information.addUser(addr[0], addr[1], username)
+    user_information.addUser(ADDR[0], ADDR[1], username)
 
     # now user can send command
     getCommand()
@@ -104,13 +113,16 @@ def getCommand():
 
     # recieve the message from Client
     while connected:
-        message_length = int(conn.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
-        msg = conn.recv(message_length).decode(ENCODING)
+        message_length = int(CONN.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
+        msg = CONN.recv(message_length).decode(ENCODING)
 
         print("[MESSAGE RECIEVED] {}".format(msg))
+
+        if msg == "sendMessage":
+            send_message.toPerson()
 
         if msg == "DISCONNECT":
             connected = False
 
     # if connected == false "while" ends and connection will be closed
-    conn.close()
+    CONN.close()

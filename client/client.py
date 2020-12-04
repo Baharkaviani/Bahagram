@@ -27,9 +27,9 @@ def main():
     s.connect(SERVER_INFORMATION)
 
     # get first message from console and send it to server
-    first_msg = input()
-    send_msg(s, first_msg)
-    send_msg(s, "DISCONNECT")
+    while True:
+        first_msg = input()
+        send_msg(s, first_msg)
 
 """
 Defined on Sun Nov 29 02:34:00 2020 (1399/9/9)
