@@ -22,10 +22,13 @@ end: no
 def handle_client(conn, addr):
     print("[NEW CONNECTION] Client connected from {}".format(addr))
 
+    # # extra print for checking
+    # print("[userInformation]: ")
+    # for obj in user_information.allUsers:
+    #    print( obj.IP, obj.username, sep =' ' )
+
     # extra print for checking
-    print("[userInformation]: ")
-    for obj in user_information.allUsers:
-       print( obj.IP, obj.username, sep =' ' )
+    print("[check if client is new]: {}".format(check(addr)))
 
     connected = True
 
@@ -45,11 +48,16 @@ def handle_client(conn, addr):
 """
 Defined on Thu Dec 3 20:33:00 2020 (1399/9/13)
 description: Check if the IP address is new or not
-end: no
 """
 def check(address):
     IP = address[0]
-    pass
+
+    # check all IP addresses
+    for userIP in user_information.allUsers:
+        if IP == userIP.IP:
+            return True
+
+    return False
 
 """
 Defined on Mon Nov 30 18:26:00 2020 (1399/9/10)
