@@ -12,7 +12,6 @@ import userInformation as user_information
 ### global variables
 MESSAGE_LENGTH_SIZE = 64
 ENCODING = 'utf-8'
-# TODO: make CONN and ADDR Global
 
 """
 Defined on Sun Nov 29 01:14:00 2020 (1399/9/9)
@@ -28,32 +27,13 @@ def handle_client(conn, addr):
     for obj in user_information.allUsers:
        print( obj.IP, obj.port, obj.username)
 
-    # # extra print for checking
-    # print("[check if client is new]: {}".format(checkIP(addr)))
-
     # check if the connected client is a new user or not
     isNew = checkIP(addr)
 
     if isNew:
         register(conn, addr)
     else:
-        pass
-
-    # set the connected flag to True until client sends "DISCONNECT"
-    connected = True
-
-    # recieve the message from Client
-    while connected:
-        message_length = int(conn.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
-        msg = conn.recv(message_length).decode(ENCODING)
-
-        print("[MESSAGE RECIEVED] {}".format(msg))
-
-        if msg == "DISCONNECT":
-            connected = False
-
-    # if connected == false "while" ends and connection will be closed
-    conn.close()
+        getCommand()
 
 """
 Defined on Thu Dec 3 20:33:00 2020 (1399/9/13)
@@ -66,16 +46,13 @@ def checkIP(address):
 
     # check all connected users' IP addresses
     for user in user_information.allUsers:
-        # # extra print for checking
-        # print("[IP address]: {}".format(IP))
-        # print("[user.IP:] {}".format(user.IP))
         if IP == user.IP:
             isNew = False
 
     return isNew
 
 """
-Defined on Fri Dec 3 03:56:00 2020 (1399/9/14)
+Defined on Fri Dec 4 03:56:00 2020 (1399/9/14)
 description: Check if the username is new or not
 """
 def checkUsername(username):
@@ -84,8 +61,6 @@ def checkUsername(username):
     # check all connected users' usernames
     for user in user_information.allUsers:
         if username == user.username:
-            # extra print for checking
-            print("[check username]: {}".format(True))
             isNew = False
 
     return isNew
@@ -93,8 +68,8 @@ def checkUsername(username):
 """
 Defined on Mon Nov 30 18:26:00 2020 (1399/9/10)
 description: Ask username from new user.
-    Save the IP and the username to users.txt file
-end: no
+    Save the IP, port and the username to users.txt file
+    After registering user can send commands to server.
 """
 def register(conn, addr):
 
@@ -115,3 +90,27 @@ def register(conn, addr):
 
     # write user information to the "users.txt" file and add to the user_information.allUsers
     user_information.addUser(addr[0], addr[1], username)
+
+    # now user can send command
+    getCommand()
+
+"""
+Defined on Fri Dec 4 15:05:00 2020 (1399/9/14)
+description:
+"""
+def getCommand():
+    # set the connected flag to True until client sends "DISCONNECT"
+    connected = True
+
+    # recieve the message from Client
+    while connected:
+        message_length = int(conn.recv(MESSAGE_LENGTH_SIZE).decode(ENCODING))
+        msg = conn.recv(message_length).decode(ENCODING)
+
+        print("[MESSAGE RECIEVED] {}".format(msg))
+
+        if msg == "DISCONNECT":
+            connected = False
+
+    # if connected == false "while" ends and connection will be closed
+    conn.close()
